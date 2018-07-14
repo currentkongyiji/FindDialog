@@ -8,10 +8,29 @@ FindDialog::FindDialog( QWidget *widget ) : QDialog( widget )
 	lineEdit = new QLineEdit;
 	label->setBuddy( lineEdit );
 
+	label1 = new QLabel( tr( "Suer to Close the Dialog?" ) );
+	yes = new QPushButton( tr( "Yes" ) );
+	cannel = new QPushButton( tr( "Cannel" ) );
+	
+	QHBoxLayout *LandR = new QHBoxLayout;
+	LandR->addWidget( yes );
+	LandR->addWidget( cannel );
+
+	QVBoxLayout *cannelDialog = new QVBoxLayout;
+	cannelDialog->addWidget( label1 );
+	cannelDialog->addLayout( LandR );
+
+	QWidget *xuzheDialog = new QWidget;
+	xuzheDialog->setLayout( cannelDialog );
+	xuzheDialog->setWindowTitle( tr( "Cannel Dialog" ) );
+	xuzheDialog->setFixedHeight( xuzheDialog->sizeHint().height() );
+
 	caseCheckBox = new QCheckBox( tr( "Match Case" ) );
 	backwardCheckBox = new QCheckBox( tr( "Find Back" ) );
 
 	findButton = new QPushButton( tr( "Find" ) );
+	findButton->setDefault( true );
+	findButton->setEnabled( false );
 	closeButton = new QPushButton( tr( "Close" ) );
 
 	connect( lineEdit, SIGNAL( textChanged( const QString& ) ),
@@ -19,7 +38,13 @@ FindDialog::FindDialog( QWidget *widget ) : QDialog( widget )
 	connect( findButton, SIGNAL( clicked() ),
 			  this, SLOT( findClicked() ) );
 	connect( closeButton, SIGNAL( clicked() ),
-			  this, SLOT( close() ) );
+			  xuzheDialog, SLOT( show() ) );
+	connect( yes, SIGNAL( clicked() ),
+		 xuzheDialog, SLOT( close() ) );
+	connect( yes, SIGNAL( clicked() ),
+		 this, SLOT( close() ) );
+	connect( cannel, SIGNAL( clicked() ),
+		 xuzheDialog, SLOT( close() ) );
 
 	QHBoxLayout *top = new QHBoxLayout;
 	top->addWidget( label );
@@ -53,6 +78,8 @@ FindDialog::~FindDialog()
 	delete backwardCheckBox;
 	delete findButton;
 	delete closeButton;
+	delete yes;
+	delete cannel;
 }
 
 void FindDialog::findClicked()

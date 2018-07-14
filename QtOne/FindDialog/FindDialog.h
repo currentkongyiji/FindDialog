@@ -21,11 +21,15 @@ private slots:
 	void enableFindButton( const QString &text );
 private:
 	QLabel *label;
+	QLabel *label1;
 	QLineEdit *lineEdit;
 	QCheckBox *caseCheckBox;
 	QCheckBox *backwardCheckBox;
 	QPushButton *findButton;
 	QPushButton *closeButton;
+	QPushButton *yes;
+	QPushButton *cannel;
+
 };
 
 #endif
